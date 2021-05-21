@@ -59,4 +59,11 @@ public class Bill {
             joinColumns = {@JoinColumn(name = "id_bill")},
             inverseJoinColumns = {@JoinColumn(name = "id_service")})
     private Set<Service> service;
+
+    @Column
+    private java.util.Date create_at;
+
+    @Column
+    private java.util.Date update_at;
+
 }

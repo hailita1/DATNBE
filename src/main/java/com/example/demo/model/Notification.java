@@ -26,4 +26,11 @@ public class Notification {
             joinColumns = {@JoinColumn(name = "id_notification")},
             inverseJoinColumns = {@JoinColumn(name = "id_user")})
     private Set<User> user;
+
+    @Column
+    private java.util.Date create_at;
+
+    @Column
+    private java.util.Date update_at;
+
 }

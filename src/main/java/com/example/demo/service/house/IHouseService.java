@@ -34,4 +34,10 @@ public interface IHouseService extends IGeneralService<House> {
     Iterable<House> findAllByAddressContainsAndNumberRoomLessThanEqualAndStatusTrueOrPriceBetween(String address, Long numberRoom, Double lowerBound, Double upperBound);
 
     Iterable<House> findAllByAddressContainsAndPriceBetweenAndStatusTrue(String address, Double lowerBound, Double upperBound);
+
+    //Danh sách nhà đang cho thuê giá giảm dần
+    Iterable<House> findByStatusTrueOrderByPriceDesc();
+
+    //Danh sách nhà đang cho thuê giá tăng dần
+    Iterable<House> findByStatusTrueOrderByPriceAsc();
 }

@@ -54,6 +54,18 @@ public class HouseController {
         return new ResponseEntity<>(houseService.findByStatusTrueOrderByDiscountDesc(), HttpStatus.OK);
     }
 
+    //List nhà giảm giá thuê giảm dần
+        @GetMapping("/priceDesc")
+    public ResponseEntity<Iterable<House>> findByStatusTrueOrderByPriceDesc() {
+        return new ResponseEntity<>(houseService.findByStatusTrueOrderByPriceDesc(), HttpStatus.OK);
+    }
+
+    //List nhà giảm giá thuê giảm dần
+    @GetMapping("/priceAsc")
+    public ResponseEntity<Iterable<House>> findByStatusTrueOrderByPriceAsc() {
+        return new ResponseEntity<>(houseService.findByStatusTrueOrderByPriceAsc(), HttpStatus.OK);
+    }
+
     @PostMapping
     public ResponseEntity<Void> createHouse(@RequestBody House house) {
         houseService.save(house);

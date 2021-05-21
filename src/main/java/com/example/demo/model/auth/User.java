@@ -28,6 +28,12 @@ public class User {
     private String telephoneNumber;
 
     @Column
+    private java.util.Date create_at;
+
+    @Column
+    private java.util.Date update_at;
+
+    @Column
     private String avt;
 
     @ManyToMany(fetch = FetchType.EAGER)
@@ -35,6 +41,5 @@ public class User {
             joinColumns = {@JoinColumn(name = "user_id")},
             inverseJoinColumns = {@JoinColumn(name = "role_id")})
     private Set<Role> roles;
-
 
 }

@@ -66,5 +66,12 @@ public class House {
             joinColumns = {@JoinColumn(name = "id_house")},
             inverseJoinColumns = {@JoinColumn(name = "id_utilitie")})
     private Set<Utilitie> utilitie;
+
+    @Column
+    private java.util.Date create_at;
+
+    @Column
+    private java.util.Date update_at;
+
 }
 

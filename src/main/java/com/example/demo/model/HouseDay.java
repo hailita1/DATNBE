@@ -23,4 +23,11 @@ public class HouseDay {
     @ManyToOne
     @JoinColumn(name = "id_house")
     private House houseDate;
+
+    @Column
+    private java.util.Date create_at;
+
+    @Column
+    private java.util.Date update_at;
+
 }

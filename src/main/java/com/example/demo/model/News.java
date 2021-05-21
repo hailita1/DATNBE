@@ -6,7 +6,7 @@ import javax.persistence.*;
 
 @Data
 @Entity
-public class Service {
+public class News {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
@@ -15,10 +15,13 @@ public class Service {
     private String name;
 
     @Column
-    private String times;
+    private String description;
 
     @Column
-    private Double price;
+    private String content;
+
+    @Column
+    private String img;
 
     @Column
     private Boolean status;

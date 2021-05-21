@@ -29,4 +29,11 @@ public class RepComment {
     @ManyToOne
     @JoinColumn(name = "id_user")
     private User user;
+
+    @Column
+    private java.util.Date create_at;
+
+    @Column
+    private java.util.Date update_at;
+
 }

@@ -6,16 +6,16 @@ import javax.persistence.*;
 
 @Data
 @Entity
-public class Service {
+public class Voucher {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
     @Column
-    private String name;
+    private String voucher_code;
 
     @Column
-    private String times;
+    private String title;
 
     @Column
     private Double price;

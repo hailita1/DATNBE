@@ -16,4 +16,11 @@ public class Category {
 
     @Column
     private Boolean status;
+
+    @Column
+    private java.util.Date create_at;
+
+    @Column
+    private java.util.Date update_at;
+
 }

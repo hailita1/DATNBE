@@ -22,4 +22,12 @@ public class Image {
     @ManyToOne
     @JoinColumn(name = "id_nha")
     private House houseImage;
+
+
+    @Column
+    private java.util.Date create_at;
+
+    @Column
+    private java.util.Date update_at;
+
 }

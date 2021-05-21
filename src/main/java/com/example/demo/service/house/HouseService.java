@@ -80,6 +80,16 @@ public class HouseService implements IHouseService {
         return houseRepository.findAllByAddressContainsAndPriceBetweenAndStatusTrue(address, lowerBound, upperBound);
     }
 
+    @Override
+    public Iterable<House> findByStatusTrueOrderByPriceDesc() {
+        return houseRepository.findByStatusTrueOrderByPriceDesc();
+    }
+
+    @Override
+    public Iterable<House> findByStatusTrueOrderByPriceAsc() {
+        return houseRepository.findByStatusTrueOrderByPriceAsc();
+    }
+
 
     @Override
     public Iterable<House> findAll() {
