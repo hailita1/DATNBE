@@ -119,6 +119,16 @@ public class HouseController {
         }).orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
+    @PutMapping("/updateNumberHires")
+    public ResponseEntity<House> updateNumberHires(@RequestBody House house) {
+        Optional<House> houseOptional = houseService.findById(house.getId());
+        return houseOptional.map(house1 -> {
+            house1.setId(house1.getId());
+            house1.setNumberHires(house.getNumberHires());
+            return new ResponseEntity<>(houseService.save(house1), HttpStatus.OK);
+        }).orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
+    }
+
     @DeleteMapping("/{id}")
     public ResponseEntity<House> deleteHouse(@PathVariable Long id) {
         Optional<House> houseOptional = houseService.findById(id);

@@ -32,19 +32,11 @@ public class AuthController {
     @Autowired
     private IUserService userService;
 
-    @Autowired
-    private EmailService emailService;
-
-    private String SUBJECT_REGISTER = "Đăng kí tài khoản thành công";
-    private String TEXT_REGISTER = "Cám ơn bạn đã xử dụng dịch vụ của chúng tôi !!!";
-
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody User user) {
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(user.getEmail(), user.getPassword()));
-
         SecurityContextHolder.getContext().setAuthentication(authentication);
-
         String jwt = jwtService.generateTokenLogin(authentication);
         UserDetails userDetails = (UserDetails) authentication.getPrincipal();
         User currentUser = userService.findByEmail(user.getEmail());
@@ -61,7 +53,6 @@ public class AuthController {
             }
         }
         userService.save(user);
-//        emailService.sendEmail(user.getEmail(), SUBJECT_REGISTER, TEXT_REGISTER);
         return new ResponseEntity<>(user, HttpStatus.OK);
     }
 
@@ -79,7 +70,7 @@ public class AuthController {
     }
 
     @PutMapping("/accounts")
-    public ResponseEntity<User> updateBill(@RequestBody User user) {
+    public ResponseEntity<User> updateUser(@RequestBody User user) {
         Optional<User> userOptional = userService.findById(user.getId());
         return userOptional.map(user1 -> {
             user1.setId(user1.getId());

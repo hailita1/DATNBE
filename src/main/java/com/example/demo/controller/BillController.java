@@ -38,7 +38,7 @@ public class BillController {
 
     private String TEXT_WAIT_FOR_CONFIRMATION = "Chờ khách hàng xác nhận";
     private String TEXT_HOST_CONFIRMETION = "Chờ chủ nhà xác nhận";
-    private String TEXT_HIRING = "Đang thuê";
+    private String TEXT_HIRING = "Đã thuê thành công";
     private String TEXT_PAID = "Đã thanh toán";
     private long oneDay = 86400000;
 
