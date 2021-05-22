@@ -9,6 +9,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.xml.ws.Action;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -25,6 +28,8 @@ public class VoucherController {
 
     @PostMapping
     public ResponseEntity<Voucher> createNewVoucher(@RequestBody Voucher voucher) {
+        String time = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss.SSS").format(Calendar.getInstance().getTime());
+        voucher.setCreate_at(time);
         return new ResponseEntity<>(voucherService.save(voucher), HttpStatus.OK);
     }
 
@@ -40,7 +45,7 @@ public class VoucherController {
         Optional<Voucher> voucherOptional = voucherService.findById(id);
         return voucherOptional.map(voucher1 -> {
             voucher1.setId(voucher1.getId());
-            voucher1.setPrice(voucher1.getPrice());
+            voucher1.setDiscount(voucher1.getDiscount());
             voucher1.setVoucher_code(voucher1.getVoucher_code());
             voucher1.setTitle(voucher.getTitle());
             voucher1.setStatus(voucher.getStatus());
@@ -55,5 +60,11 @@ public class VoucherController {
             voucherService.remove(voucher1.getId());
             return new ResponseEntity<>(voucher1, HttpStatus.OK);
         }).orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
+    }
+
+    @PostMapping("/deleteList")
+    public ResponseEntity deleteListVoucher(@RequestBody List<Long> id) {
+        voucherService.deleteListVoucher(id);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 }

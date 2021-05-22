@@ -5,6 +5,7 @@ import com.example.demo.repository.IVoucherRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -30,5 +31,14 @@ public class VoucherService implements IVoucherService {
     @Override
     public void remove(Long id) {
         voucherRepository.deleteById(id);
+    }
+
+    @Override
+    public void deleteListVoucher(List<Long> model) {
+        if (model != null) {
+            for (int i = 0; i < model.size(); i++) {
+                voucherRepository.deleteById(model.get(i));
+            }
+        }
     }
 }

@@ -19,13 +19,22 @@ public class Voucher {
     private String title;
 
     @Column
-    private Double price;
+    private Double discount;
 
     @Column
     private Boolean status;
 
     @Column
-    private java.util.Date create_at;
+    private String create_at;
+
+    @Column
+    private java.util.Date startDate;
+
+    @Column
+    private java.util.Date expiredDate;
+
+    @Column
+    private Long quantity;
 
     @Column
     private java.util.Date update_at;
