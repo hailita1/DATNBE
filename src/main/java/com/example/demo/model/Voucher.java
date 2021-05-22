@@ -1,5 +1,6 @@
 package com.example.demo.model;
 
+import com.example.demo.model.auth.User;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -29,4 +30,7 @@ public class Voucher {
     @Column
     private java.util.Date update_at;
 
+    @ManyToOne
+    @JoinColumn(name = "id_user")
+    private User user;
 }
