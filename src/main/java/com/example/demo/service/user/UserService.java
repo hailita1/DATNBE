@@ -15,6 +15,7 @@ import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
 
+import static com.example.demo.model.auth.RoleName.ROLE_ADMIN;
 import static com.example.demo.model.auth.RoleName.ROLE_USER;
 
 @Service
@@ -42,6 +43,11 @@ public class UserService implements IUserService {
     public User save(User user) {
         if (user.getRoles() == null) {
             Role role = roleService.findByName(ROLE_USER.toString());
+            Set<Role> roles = new HashSet<>();
+            roles.add(role);
+            user.setRoles(roles);
+        } else {
+            Role role = roleService.findByName(ROLE_ADMIN.toString());
             Set<Role> roles = new HashSet<>();
             roles.add(role);
             user.setRoles(roles);

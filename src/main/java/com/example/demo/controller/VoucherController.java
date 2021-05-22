@@ -48,6 +48,7 @@ public class VoucherController {
             voucher1.setDiscount(voucher1.getDiscount());
             voucher1.setVoucher_code(voucher1.getVoucher_code());
             voucher1.setTitle(voucher.getTitle());
+            voucher1.setTypeVoucher(voucher.getTypeVoucher());
             voucher1.setStatus(voucher.getStatus());
             return new ResponseEntity<>(voucherService.save(voucher1), HttpStatus.OK);
         }).orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));

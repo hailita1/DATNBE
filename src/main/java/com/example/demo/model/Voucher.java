@@ -28,6 +28,9 @@ public class Voucher {
     private String create_at;
 
     @Column
+    private int typeVoucher;
+
+    @Column
     private java.util.Date startDate;
 
     @Column
@@ -39,7 +42,5 @@ public class Voucher {
     @Column
     private java.util.Date update_at;
 
-    @ManyToOne
-    @JoinColumn(name = "id_user")
-    private User user;
+
 }
