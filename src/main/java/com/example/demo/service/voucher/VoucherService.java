@@ -5,6 +5,7 @@ import com.example.demo.repository.IVoucherRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -40,5 +41,10 @@ public class VoucherService implements IVoucherService {
                 voucherRepository.deleteById(model.get(i));
             }
         }
+    }
+
+    @Override
+    public Iterable<Voucher> findByExpiredDateGreaterThanEqual(Date date) {
+        return voucherRepository.findByExpiredDateGreaterThanEqual(date);
     }
 }

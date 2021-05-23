@@ -37,10 +37,5 @@ public class Voucher {
     private java.util.Date expiredDate;
 
     @Column
-    private Long quantity;
-
-    @Column
     private java.util.Date update_at;
-
-
 }

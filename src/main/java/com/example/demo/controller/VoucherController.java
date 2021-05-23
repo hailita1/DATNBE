@@ -2,6 +2,8 @@ package com.example.demo.controller;
 
 import com.example.demo.model.RepComment;
 import com.example.demo.model.Voucher;
+import com.example.demo.model.auth.User;
+import com.example.demo.service.user.IUserService;
 import com.example.demo.service.voucher.IVoucherService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -10,9 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.xml.ws.Action;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @RestController
 @CrossOrigin("*")
@@ -21,9 +21,13 @@ public class VoucherController {
     @Autowired
     private IVoucherService voucherService;
 
+    @Autowired
+    private IUserService userService;
+
     @GetMapping
     public ResponseEntity<Iterable<Voucher>> getAllVoucher() {
-        return new ResponseEntity<>(voucherService.findAll(), HttpStatus.OK);
+        Date now = new Date();
+        return new ResponseEntity<>(voucherService.findByExpiredDateGreaterThanEqual(now), HttpStatus.OK);
     }
 
     @PostMapping
@@ -45,11 +49,10 @@ public class VoucherController {
         Optional<Voucher> voucherOptional = voucherService.findById(id);
         return voucherOptional.map(voucher1 -> {
             voucher1.setId(voucher1.getId());
-            voucher1.setDiscount(voucher1.getDiscount());
-            voucher1.setVoucher_code(voucher1.getVoucher_code());
+            voucher1.setDiscount(voucher.getDiscount());
+            voucher1.setVoucher_code(voucher.getVoucher_code());
             voucher1.setTitle(voucher.getTitle());
             voucher1.setTypeVoucher(voucher.getTypeVoucher());
-            voucher1.setStatus(voucher.getStatus());
             return new ResponseEntity<>(voucherService.save(voucher1), HttpStatus.OK);
         }).orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
