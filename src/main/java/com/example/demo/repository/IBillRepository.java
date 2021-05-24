@@ -12,5 +12,5 @@ public interface IBillRepository extends JpaRepository<Bill, Long> {
 
     Iterable<Bill> findAllByUserAndStatusOrStatus(User user, String status1, String status2);
 
-    Iterable<Bill> findAllByHouseBillOrderByIdDesc(House house);
+    Iterable<Bill> findAllByHouseBillOrderByIdAsc(House house);
 }

@@ -47,12 +47,12 @@ public class HouseDayController {
     @PutMapping("/{id}")
     public ResponseEntity<HouseDay> updateHouseDay(@PathVariable Long id, @RequestBody HouseDay houseDay) {
         Optional<HouseDay> houseDayOptional = houseDayService.findById(id);
-        return houseDayOptional.map(category1 -> {
-            category1.setId(category1.getId());
-            category1.setHouseDate(houseDay.getHouseDate());
-            category1.setDate(houseDay.getDate());
-            category1.setStatus(houseDay.getStatus());
-            return new ResponseEntity<>(houseDayService.save(category1), HttpStatus.OK);
+        return houseDayOptional.map(houseDay1 -> {
+            houseDay1.setId(houseDay1.getId());
+            houseDay1.setHouseDate(houseDay.getHouseDate());
+            houseDay1.setDate(houseDay.getDate());
+            houseDay1.setStatus(houseDay.getStatus());
+            return new ResponseEntity<>(houseDayService.save(houseDay1), HttpStatus.OK);
         }).orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 

@@ -8,11 +8,9 @@ import java.util.Date;
 
 public interface IHouseDayService extends IGeneralService<HouseDay> {
 
-    HouseDay findById(Date date);
-
     HouseDay save(HouseDay houseDay);
 
-    void remove(Date date);
-
     Iterable<HouseDay> findAllByHouseDate(House house);
+
+    Iterable<HouseDay> findAllByHouseDateAndDateBetween(House house, Date startDate, Date endDate);
 }

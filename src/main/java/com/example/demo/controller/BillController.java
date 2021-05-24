@@ -75,7 +75,7 @@ public class BillController {
     //List ra các đơn đặt nhà của chủ nhà
     @PostMapping("/listBill")
     public ResponseEntity<Iterable<Bill>> findBillByHouse(@RequestBody House house) {
-        Iterable<Bill> bills = billService.findAllByHouseBillOrderByIdDesc(house);
+        Iterable<Bill> bills = billService.findAllByHouseBillOrderByIdAsc(house);
         if (bills == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
@@ -139,11 +139,19 @@ public class BillController {
         }).orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Bill> deleteBillService(@PathVariable Long id) {
-        Optional<Bill> billServiceOptional = billService.findById(id);
+    @PostMapping("/deleteBill")
+    public ResponseEntity<Bill> deleteBillService(@RequestBody Bill bill) {
+        Optional<Bill> billServiceOptional = billService.findById(bill.getId());
+        long startDate = bill.getStartDate().getTime() - oneDay;
+        long endDate = bill.getEndDate().getTime() - oneDay;
+        Date startDate1 = new Date(startDate);
+        Date endDate1 = new Date(endDate);
+        Iterable<HouseDay> listHouseDay = houseDayService.findAllByHouseDateAndDateBetween(bill.getHouseBill(), startDate1, endDate1);
+        for (HouseDay houseDay : listHouseDay) {
+            houseDayService.remove(houseDay.getId());
+        }
         return billServiceOptional.map(bill1 -> {
-            billService.remove(id);
+            billService.remove(bill.getId());
             return new ResponseEntity<>(bill1, HttpStatus.OK);
         }).orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }

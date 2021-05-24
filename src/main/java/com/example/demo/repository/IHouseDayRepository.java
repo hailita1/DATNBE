@@ -9,6 +9,8 @@ import org.springframework.stereotype.Repository;
 import java.util.Date;
 
 @Repository
-public interface IHouseDayRepository extends JpaRepository<HouseDay, Date> {
+public interface IHouseDayRepository extends JpaRepository<HouseDay, Long> {
     Iterable<HouseDay> findAllByHouseDate(House house);
+
+    Iterable<HouseDay> findAllByHouseDateAndDateBetween(House house, Date startDate, Date endDate);
 }

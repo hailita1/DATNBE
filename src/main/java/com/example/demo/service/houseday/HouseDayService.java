@@ -15,11 +15,6 @@ public class HouseDayService implements IHouseDayService {
     private IHouseDayRepository dateRepository;
 
     @Override
-    public HouseDay findById(Date date) {
-        return dateRepository.findById(date).get();
-    }
-
-    @Override
     public Iterable<HouseDay> findAll() {
         return dateRepository.findAll();
     }
@@ -30,13 +25,13 @@ public class HouseDayService implements IHouseDayService {
     }
 
     @Override
-    public void remove(Date date) {
-        dateRepository.deleteById(date);
+    public Iterable<HouseDay> findAllByHouseDate(House house) {
+        return dateRepository.findAllByHouseDate(house);
     }
 
     @Override
-    public Iterable<HouseDay> findAllByHouseDate(House house) {
-        return dateRepository.findAllByHouseDate(house);
+    public Iterable<HouseDay> findAllByHouseDateAndDateBetween(House house, Date startDate, Date endDate) {
+        return dateRepository.findAllByHouseDateAndDateBetween(house, startDate, endDate);
     }
 
     @Override
@@ -46,5 +41,6 @@ public class HouseDayService implements IHouseDayService {
 
     @Override
     public void remove(Long id) {
+        dateRepository.deleteById(id);
     }
 }

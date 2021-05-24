@@ -48,8 +48,8 @@ public class BillService implements IBillService {
     }
 
     @Override
-    public Iterable<Bill> findAllByHouseBillOrderByIdDesc(House house) {
-        return billRepository.findAllByHouseBillOrderByIdDesc(house);
+    public Iterable<Bill> findAllByHouseBillOrderByIdAsc(House house) {
+        return billRepository.findAllByHouseBillOrderByIdAsc(house);
     }
 
     @Override
