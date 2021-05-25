@@ -11,11 +11,11 @@ import java.util.List;
 public interface IBillService extends IGeneralService<Bill> {
     Iterable<Bill> findByOrderByIdDesc();
 
-    Iterable<Bill> findAllByUserAndStatusOrStatusOrStatus(User user, String status1, String status2, String status3);
-
     Iterable<Bill> findAllByHouseBillOrderByIdAsc(House house);
 
     void deleteListBill(List<Long> model);
 
     Iterable<Bill> findByStartDateGreaterThanEqualAndEndDateLessThanEqualAndStatus(Date sd, Date ed, String status);
+
+    Iterable<Bill> findBillByUser(Long id, String status1, String status2, String status3);
 }

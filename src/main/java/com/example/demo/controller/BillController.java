@@ -175,14 +175,14 @@ public class BillController {
     @GetMapping("/usersTrue/{id}")
     public ResponseEntity<Iterable<Bill>> getAllBillByUserTrue(@PathVariable Long id) {
         Optional<User> userOptional = userService.findById(id);
-        return userOptional.map(user -> new ResponseEntity<>(billService.findAllByUserAndStatusOrStatusOrStatus(user, TEXT_HIRING, TEXT_PAID, "haha"),
+        return userOptional.map(user -> new ResponseEntity<>(billService.findBillByUser(id, TEXT_HIRING, TEXT_PAID, "haha"),
                 HttpStatus.OK)).orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
     @GetMapping("/usersFalse/{id}")
     public ResponseEntity<Iterable<Bill>> getAllBillByFalse(@PathVariable Long id) {
         Optional<User> userOptional = userService.findById(id);
-        return userOptional.map(user -> new ResponseEntity<>(billService.findAllByUserAndStatusOrStatusOrStatus(user, TEXT_WAIT_FOR_CONFIRMATION, TEXT_HOST_CONFIRMETION, TEXT_CANCELLATION),
+        return userOptional.map(user -> new ResponseEntity<>(billService.findBillByUser(id, TEXT_WAIT_FOR_CONFIRMATION, TEXT_HOST_CONFIRMETION, TEXT_CANCELLATION),
                 HttpStatus.OK)).orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 

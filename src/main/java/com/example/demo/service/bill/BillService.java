@@ -43,11 +43,6 @@ public class BillService implements IBillService {
         return billRepository.findByOrderByIdDesc();
     }
 
-    @Override
-    public Iterable<Bill> findAllByUserAndStatusOrStatusOrStatus(User user, String status1, String status2, String status3) {
-        return billRepository.findAllByUserAndStatusOrStatusOrStatus(user, status1, status2, status3);
-    }
-
 
     @Override
     public Iterable<Bill> findAllByHouseBillOrderByIdAsc(House house) {
@@ -66,5 +61,10 @@ public class BillService implements IBillService {
     @Override
     public Iterable<Bill> findByStartDateGreaterThanEqualAndEndDateLessThanEqualAndStatus(Date sd, Date ed, String status) {
         return billRepository.findByStartDateGreaterThanEqualAndEndDateLessThanEqualAndStatus(sd, ed, status);
+    }
+
+    @Override
+    public Iterable<Bill> findBillByUser(Long id, String status1, String status2, String status3) {
+        return billRepository.findBillByUser(id, status1, status2, status3);
     }
 }
