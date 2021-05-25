@@ -39,6 +39,7 @@ public class BillController {
     private String TEXT_WAIT_FOR_CONFIRMATION = "Chờ khách hàng xác nhận";
     private String TEXT_HOST_CONFIRMETION = "Chờ chủ nhà xác nhận";
     private String TEXT_HIRING = "Đã thuê thành công";
+    private String TEXT_CANCELLATION = "Đơn đặt đã bị hủy";
     private String TEXT_PAID = "Đã thanh toán";
     private long oneDay = 86400000;
 
@@ -124,8 +125,11 @@ public class BillController {
         Optional<Bill> billServiceOptional = billService.findById(bill.getId());
         return billServiceOptional.map(bill1 -> {
             bill1.setId(bill1.getId());
+
             long startDate = bill.getStartDate().getTime() - oneDay;
             long endDate = bill.getEndDate().getTime() - oneDay;
+            Date startDate1 = new Date(startDate);
+            Date endDate1 = new Date(endDate);
             bill1.setStatus(TEXT_HIRING);
             for (long i = startDate; i <= endDate; i += oneDay) {
                 Date date1 = new Date(i);
@@ -135,9 +139,21 @@ public class BillController {
                 houseDay.setHouseDate(bill.getHouseBill());
                 houseDayService.save(houseDay);
             }
+
+            Iterable<Bill> listBill = billService.findByStartDateGreaterThanEqualAndEndDateLessThanEqualAndStatus(startDate1, endDate1, TEXT_HOST_CONFIRMETION);
+            for (Bill billEdit : listBill) {
+                Optional<Bill> billServiceOptional1 = billService.findById(billEdit.getId());
+                billServiceOptional1.map(bill2 -> {
+                    bill2.setId(billEdit.getId());
+                    bill2.setStatus(TEXT_CANCELLATION);
+                    return billService.save(bill2);
+                }).get();
+            }
+
             return new ResponseEntity<>(billService.save(bill1), HttpStatus.OK);
         }).orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
+
 
     @PostMapping("/deleteBill")
     public ResponseEntity<Bill> deleteBillService(@RequestBody Bill bill) {
@@ -159,14 +175,14 @@ public class BillController {
     @GetMapping("/usersTrue/{id}")
     public ResponseEntity<Iterable<Bill>> getAllBillByUserTrue(@PathVariable Long id) {
         Optional<User> userOptional = userService.findById(id);
-        return userOptional.map(user -> new ResponseEntity<>(billService.findAllByUserAndStatusOrStatus(user, TEXT_HIRING, TEXT_PAID),
+        return userOptional.map(user -> new ResponseEntity<>(billService.findAllByUserAndStatusOrStatusOrStatus(user, TEXT_HIRING, TEXT_PAID, "haha"),
                 HttpStatus.OK)).orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
     @GetMapping("/usersFalse/{id}")
     public ResponseEntity<Iterable<Bill>> getAllBillByFalse(@PathVariable Long id) {
         Optional<User> userOptional = userService.findById(id);
-        return userOptional.map(user -> new ResponseEntity<>(billService.findAllByUserAndStatusOrStatus(user, TEXT_WAIT_FOR_CONFIRMATION, TEXT_HOST_CONFIRMETION),
+        return userOptional.map(user -> new ResponseEntity<>(billService.findAllByUserAndStatusOrStatusOrStatus(user, TEXT_WAIT_FOR_CONFIRMATION, TEXT_HOST_CONFIRMETION, TEXT_CANCELLATION),
                 HttpStatus.OK)).orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 

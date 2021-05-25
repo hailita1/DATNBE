@@ -8,6 +8,7 @@ import com.example.demo.service.IGeneralService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -43,9 +44,10 @@ public class BillService implements IBillService {
     }
 
     @Override
-    public Iterable<Bill> findAllByUserAndStatusOrStatus(User user, String status1, String status2) {
-        return billRepository.findAllByUserAndStatusOrStatus(user, status1, status2);
+    public Iterable<Bill> findAllByUserAndStatusOrStatusOrStatus(User user, String status1, String status2, String status3) {
+        return billRepository.findAllByUserAndStatusOrStatusOrStatus(user, status1, status2, status3);
     }
+
 
     @Override
     public Iterable<Bill> findAllByHouseBillOrderByIdAsc(House house) {
@@ -59,5 +61,10 @@ public class BillService implements IBillService {
                 billRepository.deleteById(model.get(i));
             }
         }
+    }
+
+    @Override
+    public Iterable<Bill> findByStartDateGreaterThanEqualAndEndDateLessThanEqualAndStatus(Date sd, Date ed, String status) {
+        return billRepository.findByStartDateGreaterThanEqualAndEndDateLessThanEqualAndStatus(sd, ed, status);
     }
 }
