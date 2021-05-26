@@ -2,6 +2,7 @@ package com.example.demo.repository;
 
 import com.example.demo.model.Bill;
 import com.example.demo.model.House;
+import com.example.demo.model.HouseDay;
 import com.example.demo.model.auth.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -17,7 +18,7 @@ public interface IBillRepository extends JpaRepository<Bill, Long> {
 
     Iterable<Bill> findAllByHouseBillOrderByIdAsc(House house);
 
-    Iterable<Bill> findByStartDateGreaterThanEqualAndEndDateLessThanEqualAndStatus(Date sd, Date ed, String status);
+//    Iterable<Bill> findByHouseBillAndStartDateGreaterThanEqualAndEndDateLessThanEqualAndStatus(House house, Date sd, Date ed, String status);
 
     @Modifying
     @Query(value = "SELECT * FROM Bill b WHERE b.id_user = :id and (b.status = :status1 or b.status = :status2 or b.status = :status3)", nativeQuery = true)

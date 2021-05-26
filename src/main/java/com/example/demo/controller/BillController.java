@@ -116,6 +116,18 @@ public class BillController {
         return billServiceOptional.map(bill1 -> {
             bill1.setId(bill1.getId());
             bill1.setStatus(TEXT_HOST_CONFIRMETION);
+            long startDate = bill.getStartDate().getTime() - oneDay;
+            long endDate = bill.getEndDate().getTime() - oneDay;
+//            Date startDate1 = new Date(startDate);
+//            Date endDate1 = new Date(endDate);
+            for (long i = startDate; i <= endDate; i += oneDay) {
+                Date date1 = new Date(i);
+                HouseDay houseDay = new HouseDay();
+                houseDay.setDate(date1);
+                houseDay.setStatus(true);
+                houseDay.setHouseDate(bill.getHouseBill());
+                houseDayService.save(houseDay);
+            }
             return new ResponseEntity<>(billService.save(bill1), HttpStatus.OK);
         }).orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
@@ -125,31 +137,16 @@ public class BillController {
         Optional<Bill> billServiceOptional = billService.findById(bill.getId());
         return billServiceOptional.map(bill1 -> {
             bill1.setId(bill1.getId());
-
-            long startDate = bill.getStartDate().getTime() - oneDay;
-            long endDate = bill.getEndDate().getTime() - oneDay;
-            Date startDate1 = new Date(startDate);
-            Date endDate1 = new Date(endDate);
             bill1.setStatus(TEXT_HIRING);
-            for (long i = startDate; i <= endDate; i += oneDay) {
-                Date date1 = new Date(i);
-                HouseDay houseDay = new HouseDay();
-                houseDay.setDate(date1);
-                houseDay.setStatus(true);
-                houseDay.setHouseDate(bill.getHouseBill());
-                houseDayService.save(houseDay);
-            }
-
-            Iterable<Bill> listBill = billService.findByStartDateGreaterThanEqualAndEndDateLessThanEqualAndStatus(startDate1, endDate1, TEXT_HOST_CONFIRMETION);
-            for (Bill billEdit : listBill) {
-                Optional<Bill> billServiceOptional1 = billService.findById(billEdit.getId());
-                billServiceOptional1.map(bill2 -> {
-                    bill2.setId(billEdit.getId());
-                    bill2.setStatus(TEXT_CANCELLATION);
-                    return billService.save(bill2);
-                }).get();
-            }
-
+//            Iterable<Bill> listBill = billService.findByHouseBillAndStartDateGreaterThanEqualAndEndDateLessThanEqualAndStatus(bill.getHouseBill(), startDate1, endDate1, TEXT_HOST_CONFIRMETION);
+//            for (Bill billEdit : listBill) {
+//                Optional<Bill> billServiceOptional1 = billService.findById(billEdit.getId());
+//                billServiceOptional1.map(bill2 -> {
+//                    bill2.setId(billEdit.getId());
+//                    bill2.setStatus(TEXT_CANCELLATION);
+//                    return billService.save(bill2);
+//                }).get();
+//            }
             return new ResponseEntity<>(billService.save(bill1), HttpStatus.OK);
         }).orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }

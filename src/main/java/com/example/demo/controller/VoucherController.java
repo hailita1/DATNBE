@@ -24,6 +24,20 @@ public class VoucherController {
     @Autowired
     private IUserService userService;
 
+    @GetMapping("/getAll")
+    public ResponseEntity<Iterable<Voucher>> getAll() {
+        Iterable<Voucher> listVoucher = voucherService.findAll();
+        long now = new Date().getTime();
+        for (Voucher voucher : listVoucher) {
+            long sd = voucher.getExpiredDate().getTime();
+            if (now > sd) {
+                voucher.setStatus(false);
+            }
+            voucherService.save(voucher);
+        }
+        return new ResponseEntity<>(listVoucher, HttpStatus.OK);
+    }
+
     @GetMapping
     public ResponseEntity<Iterable<Voucher>> getAllVoucher() {
         Date now = new Date();
