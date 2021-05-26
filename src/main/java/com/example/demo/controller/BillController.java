@@ -147,6 +147,12 @@ public class BillController {
 //                    return billService.save(bill2);
 //                }).get();
 //            }
+            if(bill.getEvaluate() != null){
+                bill1.setEvaluate(bill.getEvaluate());
+            }
+            if(bill.getComment() != null){
+                bill1.setComment(bill.getComment());
+            }
             return new ResponseEntity<>(billService.save(bill1), HttpStatus.OK);
         }).orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
