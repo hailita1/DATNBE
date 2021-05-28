@@ -5,7 +5,6 @@ import com.example.demo.model.auth.User;
 import com.example.demo.service.EmailService;
 import com.example.demo.service.bill.IBillService;
 import com.example.demo.service.houseday.IHouseDayService;
-import com.example.demo.service.image.ImageService;
 import com.example.demo.service.service.IServiceService;
 import com.example.demo.service.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -130,22 +129,33 @@ public class BillController {
         }).orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
+    @PutMapping("/pay")
+    public ResponseEntity<Bill> Pay(@RequestBody Bill bill) {
+        Optional<Bill> billServiceOptional = billService.findById(bill.getId());
+        return billServiceOptional.map(bill1 -> {
+            bill1.setId(bill1.getId());
+            bill1.setStatus(TEXT_PAID);
+            return new ResponseEntity<>(billService.save(bill1), HttpStatus.OK);
+        }).orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
+    }
+
     @PutMapping("/confirm")
     public ResponseEntity<Bill> confirmBillByHost(@RequestBody Bill bill) {
         Optional<Bill> billServiceOptional = billService.findById(bill.getId());
         return billServiceOptional.map(bill1 -> {
             bill1.setId(bill1.getId());
-            bill1.setStatus(TEXT_HIRING);
-            if(bill.getEvaluate() != null){
+            if (bill.getEvaluate() == null && bill.getComment() == null) {
+                bill1.setStatus(TEXT_HIRING);
+            }
+            if (bill.getEvaluate() != null) {
                 bill1.setEvaluate(bill.getEvaluate());
             }
-            if(bill.getComment() != null){
+            if (bill.getComment() != null) {
                 bill1.setComment(bill.getComment());
             }
             return new ResponseEntity<>(billService.save(bill1), HttpStatus.OK);
         }).orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
-
 
     @PostMapping("/deleteBill")
     public ResponseEntity<Bill> deleteBillService(@RequestBody Bill bill) {
