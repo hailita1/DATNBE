@@ -54,7 +54,7 @@ public class UserService implements IUserService {
         }
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         if (user.getAvt() == null) {
-            user.setAvt("https://firebasestorage.googleapis.com/v0/b/demoupload-d290c.appspot.com/o/img%2F1620963043293?alt=media&token=921648bd-6ad5-4b26-93a1-05a3da221bbc");
+            user.setAvt("https://firebasestorage.googleapis.com/v0/b/demoupload-d290c.appspot.com/o/avatar.jpg?alt=media&token=9ac8b329-207a-4c5b-9581-98d5269b160d");
         }
         return userRepository.save(user);
     }
