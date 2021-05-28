@@ -15,7 +15,5 @@ public interface IBillService extends IGeneralService<Bill> {
 
     void deleteListBill(List<Long> model);
 
-//    Iterable<Bill> findByHouseBillAndStartDateGreaterThanEqualAndEndDateLessThanEqualAndStatus(House house, Date sd, Date ed, String status);
-
     Iterable<Bill> findBillByUser(Long id, String status1, String status2, String status3);
 }

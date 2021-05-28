@@ -46,6 +46,9 @@ public class Bill {
     @Column
     private String status;
 
+    @Column
+    private String voucher;
+
     @ManyToOne
     @JoinColumn(name = "id_user")
     private User user;

@@ -118,8 +118,6 @@ public class BillController {
             bill1.setStatus(TEXT_HOST_CONFIRMETION);
             long startDate = bill.getStartDate().getTime() - oneDay;
             long endDate = bill.getEndDate().getTime() - oneDay;
-//            Date startDate1 = new Date(startDate);
-//            Date endDate1 = new Date(endDate);
             for (long i = startDate; i <= endDate; i += oneDay) {
                 Date date1 = new Date(i);
                 HouseDay houseDay = new HouseDay();
@@ -138,15 +136,6 @@ public class BillController {
         return billServiceOptional.map(bill1 -> {
             bill1.setId(bill1.getId());
             bill1.setStatus(TEXT_HIRING);
-//            Iterable<Bill> listBill = billService.findByHouseBillAndStartDateGreaterThanEqualAndEndDateLessThanEqualAndStatus(bill.getHouseBill(), startDate1, endDate1, TEXT_HOST_CONFIRMETION);
-//            for (Bill billEdit : listBill) {
-//                Optional<Bill> billServiceOptional1 = billService.findById(billEdit.getId());
-//                billServiceOptional1.map(bill2 -> {
-//                    bill2.setId(billEdit.getId());
-//                    bill2.setStatus(TEXT_CANCELLATION);
-//                    return billService.save(bill2);
-//                }).get();
-//            }
             if(bill.getEvaluate() != null){
                 bill1.setEvaluate(bill.getEvaluate());
             }

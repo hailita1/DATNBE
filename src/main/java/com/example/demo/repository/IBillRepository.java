@@ -18,8 +18,6 @@ public interface IBillRepository extends JpaRepository<Bill, Long> {
 
     Iterable<Bill> findAllByHouseBillOrderByIdAsc(House house);
 
-//    Iterable<Bill> findByHouseBillAndStartDateGreaterThanEqualAndEndDateLessThanEqualAndStatus(House house, Date sd, Date ed, String status);
-
     @Modifying
     @Query(value = "SELECT * FROM Bill b WHERE b.id_user = :id and (b.status = :status1 or b.status = :status2 or b.status = :status3)", nativeQuery = true)
     Iterable<Bill> findBillByUser(Long id, String status1, String status2, String status3);

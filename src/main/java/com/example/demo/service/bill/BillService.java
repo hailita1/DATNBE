@@ -58,11 +58,6 @@ public class BillService implements IBillService {
         }
     }
 
-//    @Override
-//    public Iterable<Bill> findByHouseBillAndStartDateGreaterThanEqualAndEndDateLessThanEqualAndStatus(House house, Date sd, Date ed, String status) {
-//        return billRepository.findByHouseBillAndStartDateGreaterThanEqualAndEndDateLessThanEqualAndStatus(house, sd, ed, status);
-//    }
-
 
     @Override
     public Iterable<Bill> findBillByUser(Long id, String status1, String status2, String status3) {
