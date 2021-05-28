@@ -23,7 +23,7 @@ public class House {
     @Column
     private String name;
 
-    @Column
+    @Column(unique = true, nullable = false)
     private String address;
 
     @Column

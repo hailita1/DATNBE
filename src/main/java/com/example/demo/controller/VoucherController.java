@@ -71,9 +71,9 @@ public class VoucherController {
         }).orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
-    @DeleteMapping
-    public ResponseEntity<Voucher> deleteVoucher(@RequestBody Voucher voucher) {
-        Optional<Voucher> voucherOptional = voucherService.findById(voucher.getId());
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Voucher> deleteVoucher(@PathVariable Long id) {
+        Optional<Voucher> voucherOptional = voucherService.findById(id);
         return voucherOptional.map(voucher1 -> {
             voucherService.remove(voucher1.getId());
             return new ResponseEntity<>(voucher1, HttpStatus.OK);
