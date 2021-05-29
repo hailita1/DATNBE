@@ -34,8 +34,7 @@ public class AuthController {
 
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody User user) {
-        Authentication authentication = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(user.getEmail(), user.getPassword()));
+        Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(user.getEmail(), user.getPassword()));
         SecurityContextHolder.getContext().setAuthentication(authentication);
         String jwt = jwtService.generateTokenLogin(authentication);
         UserDetails userDetails = (UserDetails) authentication.getPrincipal();
@@ -55,6 +54,26 @@ public class AuthController {
         userService.save(user);
         return new ResponseEntity<>(user, HttpStatus.OK);
     }
+
+    @PostMapping("/registerGoogle")
+    public ResponseEntity<User> registerGoogle(@RequestBody User user) {
+        int check = 0;
+        User user1 = new User();
+        Iterable<User> users = userService.findAll();
+        for (User currentUser : users) {
+            if (currentUser.getEmail().equals(user.getEmail())) {
+                user1 = currentUser;
+                check++;
+            }
+        }
+        if (check == 0) {
+            userService.save(user);
+            return new ResponseEntity<>(user, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(user1, HttpStatus.OK);
+        }
+    }
+
 
     @GetMapping("/accounts")
     public ResponseEntity<Iterable<User>> getAllUser() {

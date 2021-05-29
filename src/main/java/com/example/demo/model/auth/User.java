@@ -15,7 +15,7 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(unique = true, nullable = false)
+    @Column(nullable = false)
     private String email;
 
     @Column(nullable = false)
@@ -26,6 +26,9 @@ public class User {
 
     @Column
     private String telephoneNumber;
+
+    @Column
+    private String provider;
 
     @Column
     private java.util.Date create_at;
