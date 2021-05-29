@@ -49,8 +49,14 @@ public class BillController {
 
     @PostMapping
     public ResponseEntity<Void> createNewBill(@RequestBody Bill bill) {
+        String message = "Thông tin khách hàng\n" +
+                "Họ tên: " + bill.getNameUser() + "\n" +
+                "Email: " + bill.getEmail() + "\n" +
+                "Số điện thoại: " + bill.getTelephoneNumber() + "\n" +
+                "Tổng tiền cần thanh toán sau khi tính giảm giá và voucher: " + bill.getTotalPrice() + "VNĐ\n" +
+                "Hãy ấn vào link sau để xác nhận đặt thuê HomeStay: http://localhost:4200/confirm/" + bill.getId() + "\nXin cám ơn đã sử dụng dịch vụ của chúng tôi !!!";
         if (bill.getUser() != null) {
-            emailService.sendEmail(bill.getEmail(), "Xác nhận đặt thuê HomeStay", "Hãy ấn vào link sau để xác nhận đặt thuê HomeStay: http://localhost:4200/confirm/" + bill.getId() + "\n Xin cám ơn đã sử dụng dịch vụ của chúng tôi !!!");
+            emailService.sendEmail(bill.getEmail(), "Xác nhận đặt thuê HomeStay", message);
         }
         bill.setStatus(TEXT_WAIT_FOR_CONFIRMATION);
         String time = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss.SSS").format(Calendar.getInstance().getTime());
