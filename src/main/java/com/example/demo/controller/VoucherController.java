@@ -1,8 +1,6 @@
 package com.example.demo.controller;
 
-import com.example.demo.model.RepComment;
 import com.example.demo.model.Voucher;
-import com.example.demo.model.auth.User;
 import com.example.demo.service.user.IUserService;
 import com.example.demo.service.voucher.IVoucherService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,7 +8,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.xml.ws.Action;
 import java.text.SimpleDateFormat;
 import java.util.*;
 

@@ -46,9 +46,6 @@ public class House {
     @OneToMany(mappedBy = "houseImage", cascade = CascadeType.REMOVE)
     private List<Image> images;
 
-    @OneToMany(mappedBy = "houseRepcomment", cascade = CascadeType.REMOVE)
-    private List<RepComment> repComments;
-
     @JsonBackReference
     @OneToMany(mappedBy = "houseBill", cascade = CascadeType.REMOVE)
     private List<Bill> bill;
