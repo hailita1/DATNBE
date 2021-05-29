@@ -30,6 +30,9 @@ public class House {
     private String description;
 
     @Column
+    private String acreage;
+
+    @Column
     private Double price;
 
     @Column

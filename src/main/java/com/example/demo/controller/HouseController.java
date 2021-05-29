@@ -55,7 +55,7 @@ public class HouseController {
     }
 
     //List nhà giảm giá thuê giảm dần
-        @GetMapping("/priceDesc")
+    @GetMapping("/priceDesc")
     public ResponseEntity<Iterable<House>> findByStatusTrueOrderByPriceDesc() {
         return new ResponseEntity<>(houseService.findByStatusTrueOrderByPriceDesc(), HttpStatus.OK);
     }
@@ -103,6 +103,7 @@ public class HouseController {
             house1.setNumberRoom(house.getNumberRoom());
             house1.setCategory(house.getCategory());
             house1.setPrice(house.getPrice());
+            house1.setAcreage(house.getAcreage());
             house1.setDiscount(house.getDiscount());
             house1.setStatus(house.getStatus());
             Iterable<Image> images = imageService.findAllByHouseImage(house);
