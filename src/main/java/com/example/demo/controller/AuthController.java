@@ -109,7 +109,8 @@ public class AuthController {
             user1.setTelephoneNumber(user.getTelephoneNumber());
             user1.setFullName(user.getFullName());
             user1.setAvt(user.getAvt());
-            return new ResponseEntity<>(userService.save(user1), HttpStatus.OK);
+            userService.save(user1);
+            return new ResponseEntity<>(user1, HttpStatus.OK);
         }).orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
@@ -119,7 +120,8 @@ public class AuthController {
         return userOptional.map(user1 -> {
             user1.setId(user1.getId());
             user1.setPassword(passwordEncoder.encode(user.getPassword()));
-            return new ResponseEntity<>(userService.save(user1), HttpStatus.OK);
+            userService.save(user1);
+            return new ResponseEntity<>(user1, HttpStatus.OK);
         }).orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
