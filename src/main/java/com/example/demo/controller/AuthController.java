@@ -32,6 +32,9 @@ public class AuthController {
     @Autowired
     private IUserService userService;
 
+    @Autowired
+    private EmailService emailService;
+
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody User user) {
         Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(user.getEmail(), user.getPassword()));
@@ -94,11 +97,22 @@ public class AuthController {
         return userOptional.map(user1 -> {
             user1.setId(user1.getId());
             user1.setEmail(user.getEmail());
+            user1.setPassword(user.getPassword());
             user1.setTelephoneNumber(user.getTelephoneNumber());
             user1.setFullName(user.getFullName());
             user1.setAvt(user.getAvt());
             return new ResponseEntity<>(userService.save(user1), HttpStatus.OK);
         }).orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
+    }
+
+    @PutMapping("/resetpassword")
+    public ResponseEntity<User> resetPassword(@RequestBody User user) {
+        String password = "Abcxyz123";
+        User user1 = userService.findByEmail(user.getEmail());
+        user1.setPassword(password);
+        userService.save(user1);
+        emailService.sendEmail(user.getEmail(), "Lấy lại mật khẩu thành công", "\nMật khẩu mới của bạn là: " + password + "\nXin cám ơn bạn đã sử dụng dịch vụ của chúng tôi !");
+        return new ResponseEntity<>(user1, HttpStatus.OK);
     }
 
 

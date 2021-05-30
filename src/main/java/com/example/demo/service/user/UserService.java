@@ -47,15 +47,30 @@ public class UserService implements IUserService {
             roles.add(role);
             user.setRoles(roles);
         } else {
-            Role role = roleService.findByName(ROLE_ADMIN.toString());
-            Set<Role> roles = new HashSet<>();
-            roles.add(role);
-            user.setRoles(roles);
+            boolean check = false;
+            for (Role role1 : user.getRoles()) {
+                if (role1.getName().equals("ROLE_USER")) {
+                    check = false;
+                } else {
+                    check = true;
+                }
+                if (check == true) {
+                    Role role = roleService.findByName(ROLE_ADMIN.toString());
+                    Set<Role> roles = new HashSet<>();
+                    roles.add(role);
+                    user.setRoles(roles);
+                } else {
+                    Role role = roleService.findByName(ROLE_USER.toString());
+                    Set<Role> roles = new HashSet<>();
+                    roles.add(role);
+                    user.setRoles(roles);
+                }
+            }
         }
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
         if (user.getAvt() == null) {
             user.setAvt("https://firebasestorage.googleapis.com/v0/b/demoupload-d290c.appspot.com/o/avatar.jpg?alt=media&token=9ac8b329-207a-4c5b-9581-98d5269b160d");
         }
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
         return userRepository.save(user);
     }
 
