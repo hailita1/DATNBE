@@ -36,9 +36,6 @@ public class UserService implements IUserService {
     @Autowired
     private IRoleService roleService;
 
-    @Autowired
-    private PasswordEncoder passwordEncoder;
-
     @Override
     public User save(User user) {
         if (user.getRoles() == null) {
@@ -67,10 +64,6 @@ public class UserService implements IUserService {
                 }
             }
         }
-        if (user.getAvt() == null) {
-            user.setAvt("https://firebasestorage.googleapis.com/v0/b/demoupload-d290c.appspot.com/o/avatar.jpg?alt=media&token=9ac8b329-207a-4c5b-9581-98d5269b160d");
-        }
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
         return userRepository.save(user);
     }
 

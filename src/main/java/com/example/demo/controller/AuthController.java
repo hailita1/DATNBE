@@ -16,6 +16,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
@@ -34,6 +35,9 @@ public class AuthController {
 
     @Autowired
     private EmailService emailService;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody User user) {
@@ -54,6 +58,10 @@ public class AuthController {
                 return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
             }
         }
+        if (user.getAvt() == null) {
+            user.setAvt("https://firebasestorage.googleapis.com/v0/b/demoupload-d290c.appspot.com/o/avatar.jpg?alt=media&token=9ac8b329-207a-4c5b-9581-98d5269b160d");
+        }
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
         userService.save(user);
         return new ResponseEntity<>(user, HttpStatus.OK);
     }
@@ -70,6 +78,7 @@ public class AuthController {
             }
         }
         if (check == 0) {
+            user.setPassword(passwordEncoder.encode(user.getPassword()));
             userService.save(user);
             return new ResponseEntity<>(user, HttpStatus.OK);
         } else {
@@ -97,13 +106,23 @@ public class AuthController {
         return userOptional.map(user1 -> {
             user1.setId(user1.getId());
             user1.setEmail(user.getEmail());
-            user1.setPassword(user.getPassword());
             user1.setTelephoneNumber(user.getTelephoneNumber());
             user1.setFullName(user.getFullName());
             user1.setAvt(user.getAvt());
             return new ResponseEntity<>(userService.save(user1), HttpStatus.OK);
         }).orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
+
+    @PutMapping("/updatePassword")
+    public ResponseEntity<User> updatePassword(@RequestBody User user) {
+        Optional<User> userOptional = userService.findById(user.getId());
+        return userOptional.map(user1 -> {
+            user1.setId(user1.getId());
+            user1.setPassword(passwordEncoder.encode(user.getPassword()));
+            return new ResponseEntity<>(userService.save(user1), HttpStatus.OK);
+        }).orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
+    }
+
 
     @PutMapping("/resetpassword")
     public ResponseEntity<User> resetPassword(@RequestBody User user) {
