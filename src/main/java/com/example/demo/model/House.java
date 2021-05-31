@@ -72,6 +72,5 @@ public class House {
 
     @Column
     private java.util.Date update_at;
-
 }
 
