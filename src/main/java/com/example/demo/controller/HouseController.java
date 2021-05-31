@@ -50,8 +50,8 @@ public class HouseController {
 
     //List nhà giảm giá thuê giảm dần
     @GetMapping("/discount")
-    public ResponseEntity<Iterable<House>> findByStatusTrueOrderByDiscountDesc() {
-        return new ResponseEntity<>(houseService.findByStatusTrueOrderByDiscountDesc(), HttpStatus.OK);
+    public ResponseEntity<Iterable<House>> findByStatusTrueAndDiscountGreaterThanOrderByDiscountDesc() {
+        return new ResponseEntity<>(houseService.findByStatusTrueAndDiscountGreaterThanOrderByDiscountDesc(Long.parseLong("0")), HttpStatus.OK);
     }
 
     //List nhà giảm giá thuê giảm dần

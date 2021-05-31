@@ -56,8 +56,8 @@ public class HouseService implements IHouseService {
     }
 
     @Override
-    public Iterable<House> findByStatusTrueOrderByDiscountDesc() {
-        return houseRepository.findByStatusTrueOrderByDiscountDesc();
+    public Iterable<House> findByStatusTrueAndDiscountGreaterThanOrderByDiscountDesc(Long number) {
+        return houseRepository.findByStatusTrueAndDiscountGreaterThanOrderByDiscountDesc(number);
     }
 
     @Override

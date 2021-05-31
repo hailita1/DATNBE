@@ -25,7 +25,7 @@ public interface IHouseService extends IGeneralService<House> {
 
     Iterable<House> findByStatusTrueOrderByNumberHiresDesc();
 
-    Iterable<House> findByStatusTrueOrderByDiscountDesc();
+    Iterable<House> findByStatusTrueAndDiscountGreaterThanOrderByDiscountDesc(Long number);
 
     Iterable<House> findAllByAddressContaining(String address);
 

@@ -14,7 +14,7 @@ public interface IHouseRepository extends JpaRepository<House, Long> {
 
     Iterable<House> findByStatusTrueOrderByIdDesc();
 
-    Iterable<House> findByStatusTrueOrderByDiscountDesc();
+    Iterable<House> findByStatusTrueAndDiscountGreaterThanOrderByDiscountDesc(Long number);
 
     Iterable<House> findByOrderByIdDesc();
 
