@@ -86,9 +86,11 @@ public class HouseController {
             }
         }
         if (house.getUtilitie() != null) {
-            for (Utilitie utilitie : house.getUtilitie()) {
-                utilitie.setHouseUtilitie(house);
-                utilitieService.save(utilitie);
+            for (Utilitie utilitieTest : house.getUtilitie()) {
+                Utilitie utilitie = utilitieService.findByName(utilitieTest.getName());
+                Set<Utilitie> utilities = new HashSet<>();
+                utilities.add(utilitie);
+                house.setUtilitie(utilities);
             }
         }
         HttpHeaders headers = new HttpHeaders();
@@ -134,16 +136,6 @@ public class HouseController {
                 for (Service service : house.getServices()) {
                     service.setHouseService(house);
                     serviceService.save(service);
-                }
-            }
-            Iterable<Utilitie> utilities = utilitieService.findAllByHouseUtilitie(house);
-            for (Utilitie utilitie : utilities) {
-                utilitieService.remove(utilitie.getId());
-            }
-            if (house.getUtilitie() != null) {
-                for (Utilitie utilitie : house.getUtilitie()) {
-                    utilitie.setHouseUtilitie(house);
-                    utilitieService.save(utilitie);
                 }
             }
             return new ResponseEntity<>(houseService.save(house1), HttpStatus.OK);

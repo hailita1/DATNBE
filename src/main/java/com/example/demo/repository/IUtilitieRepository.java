@@ -11,6 +11,4 @@ public interface IUtilitieRepository extends JpaRepository<Utilitie, Long> {
     Utilitie findByName(String name);
 
     Iterable<Utilitie> findAllByStatusTrue();
-
-    Iterable<Utilitie> findAllByHouseUtilitie(House house);
 }

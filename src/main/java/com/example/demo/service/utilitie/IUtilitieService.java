@@ -11,7 +11,5 @@ public interface IUtilitieService extends IGeneralService<Utilitie> {
 
     void deleteListService(List<Long> model);
 
-    Iterable<Utilitie> findAllByHouseUtilitie(House house);
-
     Iterable<Utilitie> findAllByStatusTrue();
 }
