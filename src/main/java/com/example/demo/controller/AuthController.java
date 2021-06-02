@@ -130,7 +130,7 @@ public class AuthController {
     public ResponseEntity<User> resetPassword(@RequestBody User user) {
         String password = "Abcxyz123";
         User user1 = userService.findByEmail(user.getEmail());
-        user1.setPassword(password);
+        user1.setPassword(passwordEncoder.encode(password));
         userService.save(user1);
         emailService.sendEmail(user.getEmail(), "Lấy lại mật khẩu thành công", "\nMật khẩu mới của bạn là: " + password + "\nXin cám ơn bạn đã sử dụng dịch vụ của chúng tôi !");
         return new ResponseEntity<>(user1, HttpStatus.OK);
