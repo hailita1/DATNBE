@@ -1,5 +1,6 @@
 package com.example.demo.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -28,5 +29,9 @@ public class Service {
 
     @Column
     private java.util.Date update_at;
+    @JsonBackReference
+    @ManyToOne
+    @JoinColumn(name = "id_nha")
+    private House houseService;
 
 }

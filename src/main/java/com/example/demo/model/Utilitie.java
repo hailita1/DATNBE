@@ -28,6 +28,11 @@ public class Utilitie {
     @Column
     private java.util.Date update_at;
 
+    @JsonBackReference
+    @ManyToOne
+    @JoinColumn(name = "id_nha")
+    private House houseUtilitie;
+
 }
 
 

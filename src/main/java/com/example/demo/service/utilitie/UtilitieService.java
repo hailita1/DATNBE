@@ -49,6 +49,11 @@ public class UtilitieService implements IUtilitieService {
     }
 
     @Override
+    public Iterable<Utilitie> findAllByHouseUtilitie(House house) {
+        return utilitieRepository.findAllByHouseUtilitie(house);
+    }
+
+    @Override
     public Iterable<Utilitie> findAllByStatusTrue() {
         return utilitieRepository.findAllByStatusTrue();
     }

@@ -1,6 +1,7 @@
 package com.example.demo.controller;
 
 import com.example.demo.model.Category;
+import com.example.demo.model.House;
 import com.example.demo.model.Service;
 import com.example.demo.service.service.ServiceService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,9 +25,9 @@ public class ServiceController {
     }
 
     //List dịch vụ hoạt động
-    @GetMapping("/statusTrue")
-    public ResponseEntity<Iterable<Service>> getAllCategoryStatusTrue() {
-        return new ResponseEntity<>(serviceService.findAllByStatusTrue(), HttpStatus.OK);
+    @PostMapping("/statusTrue")
+    public ResponseEntity<Iterable<Service>> getAllCategoryStatusTrue(@RequestBody House house) {
+        return new ResponseEntity<>(serviceService.findAllByHouseService(house), HttpStatus.OK);
     }
 
     @PostMapping

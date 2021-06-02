@@ -5,6 +5,7 @@ import com.example.demo.model.auth.User;
 
 import com.example.demo.service.house.IHouseService;
 import com.example.demo.service.image.ImageService;
+import com.example.demo.service.service.IServiceService;
 import com.example.demo.service.utilitie.IUtilitieService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -29,6 +30,9 @@ public class HouseController {
 
     @Autowired
     private IUtilitieService utilitieService;
+
+    @Autowired
+    private IServiceService serviceService;
 
     //List nhà bên admin
     @GetMapping
@@ -75,11 +79,17 @@ public class HouseController {
                 imageService.save(image);
             }
         }
+        if (house.getServices() != null) {
+            for (Service service : house.getServices()) {
+                service.setHouseService(house);
+                serviceService.save(service);
+            }
+        }
         if (house.getUtilitie() != null) {
-            Utilitie utilitie = utilitieService.findByName(house.getUtilitie().toString());
-            Set<Utilitie> utilities = new HashSet<>();
-            utilities.add(utilitie);
-            house.setUtilitie(utilities);
+            for (Utilitie utilitie : house.getUtilitie()) {
+                utilitie.setHouseUtilitie(house);
+                utilitieService.save(utilitie);
+            }
         }
         HttpHeaders headers = new HttpHeaders();
         return new ResponseEntity<Void>(headers, HttpStatus.CREATED);
@@ -114,6 +124,26 @@ public class HouseController {
                 for (Image image : house.getImages()) {
                     image.setHouseImage(house);
                     imageService.save(image);
+                }
+            }
+            Iterable<Service> services = serviceService.findAllByHouseService(house);
+            for (Service service : services) {
+                serviceService.remove(service.getId());
+            }
+            if (house.getServices() != null) {
+                for (Service service : house.getServices()) {
+                    service.setHouseService(house);
+                    serviceService.save(service);
+                }
+            }
+            Iterable<Utilitie> utilities = utilitieService.findAllByHouseUtilitie(house);
+            for (Utilitie utilitie : utilities) {
+                utilitieService.remove(utilitie.getId());
+            }
+            if (house.getUtilitie() != null) {
+                for (Utilitie utilitie : house.getUtilitie()) {
+                    utilitie.setHouseUtilitie(house);
+                    utilitieService.save(utilitie);
                 }
             }
             return new ResponseEntity<>(houseService.save(house1), HttpStatus.OK);

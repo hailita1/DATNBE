@@ -1,5 +1,6 @@
 package com.example.demo.service.service;
 
+import com.example.demo.model.House;
 import com.example.demo.model.Service;
 import com.example.demo.service.IGeneralService;
 
@@ -11,4 +12,6 @@ public interface IServiceService extends IGeneralService<Service> {
     Iterable<Service> findAllByStatusTrue();
 
     Service findByName(String name);
+
+    Iterable<Service> findAllByHouseService(House house);
 }

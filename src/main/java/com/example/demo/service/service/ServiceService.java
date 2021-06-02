@@ -1,5 +1,6 @@
 package com.example.demo.service.service;
 
+import com.example.demo.model.House;
 import com.example.demo.repository.IServiceRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -49,6 +50,11 @@ public class ServiceService implements IServiceService {
     @Override
     public com.example.demo.model.Service findByName(String name) {
         return serviceRepository.findByName(name);
+    }
+
+    @Override
+    public Iterable<com.example.demo.model.Service> findAllByHouseService(House house) {
+        return serviceRepository.findAllByHouseService(house);
     }
 }
 
