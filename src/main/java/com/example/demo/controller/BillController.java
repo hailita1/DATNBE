@@ -54,13 +54,15 @@ public class BillController {
                 "Email: " + bill.getEmail() + "\n" +
                 "Số điện thoại: " + bill.getTelephoneNumber() + "\n" +
                 "Tổng tiền cần thanh toán sau khi tính giảm giá và voucher: " + bill.getTotalPrice() + "VNĐ\n" +
-                "Bạn đã thanh toán online: " + bill.getTotalPrice() / 2 + "VNĐ\n" +
-                "Bạn cần phải thanh toán: " + bill.getTotalPrice() / 2 + "VNĐ cho chủ nhà, khi trả HomeStay\n" +
-                "Hãy ấn vào link sau để xác nhận đặt thuê HomeStay: http://localhost:4200/confirm/" + bill.getId() + "\nXin cám ơn đã sử dụng dịch vụ của chúng tôi !!!";
+                "Bạn đã thanh toán online: " + bill.getTotalPrice() / 2 + " VNĐ\n" +
+                "Bạn cần phải thanh toán: " + bill.getTotalPrice() / 2 + " VNĐ cho chủ HomeStay\n" +
+                "Hãy chờ xác nhận của chủ HomeStay" +
+                "Xin cám ơn đã sử dụng dịch vụ của chúng tôi !!!";
         if (bill.getUser() != null) {
-            emailService.sendEmail(bill.getEmail(), "Xác nhận đặt thuê HomeStay", message);
+            emailService.sendEmail(bill.getEmail(), "Đặt thuê HomeStay thành công !", message);
         }
-        bill.setStatus(TEXT_WAIT_FOR_CONFIRMATION);
+        bill.setStatus(TEXT_HOST_CONFIRMETION);
+//        bill.setStatus(TEXT_WAIT_FOR_CONFIRMATION);
         String time = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss.SSS").format(Calendar.getInstance().getTime());
         bill.setBookingDate(time);
         long startDate = bill.getStartDate().getTime() + oneDay;
@@ -69,6 +71,14 @@ public class BillController {
         Date endDate1 = new Date(endDate);
         bill.setStartDate(startDate1);
         bill.setEndDate(endDate1);
+        for (long i = (startDate - oneDay); i <= (endDate - oneDay); i += oneDay) {
+            Date date1 = new Date(i);
+            HouseDay houseDay = new HouseDay();
+            houseDay.setDate(date1);
+            houseDay.setStatus(true);
+            houseDay.setHouseDate(bill.getHouseBill());
+            houseDayService.save(houseDay);
+        }
         billService.save(bill);
         if (bill.getService() != null) {
             Service service = serviceService.findByName(bill.getService().toString());
@@ -113,26 +123,6 @@ public class BillController {
             bill1.setHouseBill(bill.getHouseBill());
             bill1.setTotalPrice(bill.getTotalPrice());
             bill1.setStatus(bill.getStatus());
-            return new ResponseEntity<>(billService.save(bill1), HttpStatus.OK);
-        }).orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
-    }
-
-    @PutMapping("/confirm/{id}")
-    public ResponseEntity<Bill> confirmBill(@PathVariable Long id, @RequestBody Bill bill) {
-        Optional<Bill> billServiceOptional = billService.findById(id);
-        return billServiceOptional.map(bill1 -> {
-            bill1.setId(bill1.getId());
-            bill1.setStatus(TEXT_HOST_CONFIRMETION);
-            long startDate = bill.getStartDate().getTime() - oneDay;
-            long endDate = bill.getEndDate().getTime() - oneDay;
-            for (long i = startDate; i <= endDate; i += oneDay) {
-                Date date1 = new Date(i);
-                HouseDay houseDay = new HouseDay();
-                houseDay.setDate(date1);
-                houseDay.setStatus(true);
-                houseDay.setHouseDate(bill.getHouseBill());
-                houseDayService.save(houseDay);
-            }
             return new ResponseEntity<>(billService.save(bill1), HttpStatus.OK);
         }).orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
