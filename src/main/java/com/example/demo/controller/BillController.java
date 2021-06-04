@@ -54,6 +54,8 @@ public class BillController {
                 "Email: " + bill.getEmail() + "\n" +
                 "Số điện thoại: " + bill.getTelephoneNumber() + "\n" +
                 "Tổng tiền cần thanh toán sau khi tính giảm giá và voucher: " + bill.getTotalPrice() + "VNĐ\n" +
+                "Bạn đã thanh toán online: " + bill.getTotalPrice() / 2 + "VNĐ\n" +
+                "Bạn cần phải thanh toán: " + bill.getTotalPrice() / 2 + "VNĐ cho chủ nhà, khi trả HomeStay\n" +
                 "Hãy ấn vào link sau để xác nhận đặt thuê HomeStay: http://localhost:4200/confirm/" + bill.getId() + "\nXin cám ơn đã sử dụng dịch vụ của chúng tôi !!!";
         if (bill.getUser() != null) {
             emailService.sendEmail(bill.getEmail(), "Xác nhận đặt thuê HomeStay", message);
