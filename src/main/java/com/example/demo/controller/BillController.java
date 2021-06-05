@@ -3,6 +3,7 @@ package com.example.demo.controller;
 import com.example.demo.model.*;
 import com.example.demo.model.auth.User;
 import com.example.demo.service.EmailService;
+import com.example.demo.service.bill.BillService;
 import com.example.demo.service.bill.IBillService;
 import com.example.demo.service.houseday.IHouseDayService;
 import com.example.demo.service.service.IServiceService;
@@ -24,6 +25,9 @@ public class BillController {
     private IBillService billService;
 
     @Autowired
+    private BillService billServiceUpdate;
+
+    @Autowired
     private UserService userService;
 
     @Autowired
@@ -35,8 +39,6 @@ public class BillController {
     @Autowired
     private EmailService emailService;
 
-    private String TEXT_WAIT_FOR_CONFIRMATION = "Chờ khách hàng xác nhận";
-    private String TEXT_HOST_CONFIRMETION = "Chờ chủ nhà xác nhận";
     private String TEXT_HIRING = "Đã thuê thành công";
     private String TEXT_CANCELLATION = "Đơn đặt đã bị hủy";
     private String TEXT_PAID = "Đã thanh toán";
@@ -55,14 +57,12 @@ public class BillController {
                 "Số điện thoại: " + bill.getTelephoneNumber() + "\n" +
                 "Tổng tiền cần thanh toán sau khi tính giảm giá và voucher: " + bill.getTotalPrice() + "VNĐ\n" +
                 "Bạn đã thanh toán online: " + bill.getTotalPrice() / 2 + " VNĐ\n" +
-                "Bạn cần phải thanh toán: " + bill.getTotalPrice() / 2 + " VNĐ cho chủ HomeStay\n" +
-                "Hãy chờ xác nhận của chủ HomeStay" +
+                "Bạn cần phải thanh toán: " + bill.getTotalPrice() / 2 + " VNĐ cho chủ HomeStay" + "\n" +
                 "Xin cám ơn đã sử dụng dịch vụ của chúng tôi !!!";
         if (bill.getUser() != null) {
             emailService.sendEmail(bill.getEmail(), "Đặt thuê HomeStay thành công !", message);
         }
-        bill.setStatus(TEXT_HOST_CONFIRMETION);
-//        bill.setStatus(TEXT_WAIT_FOR_CONFIRMATION);
+        bill.setStatus(TEXT_HIRING);
         String time = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss.SSS").format(Calendar.getInstance().getTime());
         bill.setBookingDate(time);
         long startDate = bill.getStartDate().getTime() + oneDay;
@@ -79,13 +79,15 @@ public class BillController {
             houseDay.setHouseDate(bill.getHouseBill());
             houseDayService.save(houseDay);
         }
-        billService.save(bill);
+        bill.setService(bill.getService());
         if (bill.getService() != null) {
-            Service service = serviceService.findByName(bill.getService().toString());
-            Set<Service> services = new HashSet<>();
-            services.add(service);
-            bill.setService(services);
+            for (Service service : bill.getService()) {
+                service.setHouseService(bill.getHouseBill());
+                serviceService.save(service);
+            }
         }
+        billService.save(bill);
+
         HttpHeaders headers = new HttpHeaders();
         return new ResponseEntity<Void>(headers, HttpStatus.CREATED);
     }
@@ -142,9 +144,6 @@ public class BillController {
         Optional<Bill> billServiceOptional = billService.findById(bill.getId());
         return billServiceOptional.map(bill1 -> {
             bill1.setId(bill1.getId());
-            if (bill.getEvaluate() == null && bill.getComment() == null) {
-                bill1.setStatus(TEXT_HIRING);
-            }
             if (bill.getEvaluate() != null) {
                 bill1.setEvaluate(bill.getEvaluate());
             }
@@ -155,9 +154,13 @@ public class BillController {
         }).orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
+    @PutMapping("/update")
+    public ResponseEntity<Object> updateBillService(@RequestBody Bill bill) {
+        return billServiceUpdate.updateBillService(bill, bill.getId());
+    }
+
     @PostMapping("/deleteBill")
-    public ResponseEntity<Bill> deleteBillService(@RequestBody Bill bill) {
-        Optional<Bill> billServiceOptional = billService.findById(bill.getId());
+    public ResponseEntity deleteBill(@RequestBody Bill bill) {
         long startDate = bill.getStartDate().getTime() - oneDay;
         long endDate = bill.getEndDate().getTime() - oneDay;
         Date startDate1 = new Date(startDate);
@@ -166,10 +169,8 @@ public class BillController {
         for (HouseDay houseDay : listHouseDay) {
             houseDayService.remove(houseDay.getId());
         }
-        return billServiceOptional.map(bill1 -> {
-            billService.remove(bill.getId());
-            return new ResponseEntity<>(bill1, HttpStatus.OK);
-        }).orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
+        billService.remove(bill.getId());
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @GetMapping("/usersTrue/{id}")
@@ -182,7 +183,7 @@ public class BillController {
     @GetMapping("/usersFalse/{id}")
     public ResponseEntity<Iterable<Bill>> getAllBillByFalse(@PathVariable Long id) {
         Optional<User> userOptional = userService.findById(id);
-        return userOptional.map(user -> new ResponseEntity<>(billService.findBillByUser(id, TEXT_WAIT_FOR_CONFIRMATION, TEXT_HOST_CONFIRMETION, TEXT_CANCELLATION),
+        return userOptional.map(user -> new ResponseEntity<>(billService.findBillByUser(id, "haha", "haha", TEXT_CANCELLATION),
                 HttpStatus.OK)).orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 

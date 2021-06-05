@@ -1,12 +1,9 @@
 package com.example.demo.model;
 
 import com.example.demo.model.auth.User;
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 
 import javax.persistence.*;
-import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
@@ -47,7 +44,7 @@ public class Bill {
     private String status;
 
     @Column
-    private String voucher;
+    private Double voucher;
 
     @ManyToOne
     @JoinColumn(name = "id_user")
@@ -57,11 +54,11 @@ public class Bill {
     @JoinColumn(name = "id_house")
     private House houseBill;
 
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany(targetEntity = Service.class, cascade = {CascadeType.PERSIST, CascadeType.DETACH, CascadeType.MERGE, CascadeType.REFRESH})
     @JoinTable(name = "bills_services",
             joinColumns = {@JoinColumn(name = "id_bill")},
             inverseJoinColumns = {@JoinColumn(name = "id_service")})
-    private Set<Service> service;
+    private List<Service> service;
 
     @Column
     private java.util.Date create_at;

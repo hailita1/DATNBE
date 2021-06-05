@@ -4,18 +4,26 @@ import com.example.demo.model.Bill;
 import com.example.demo.model.House;
 import com.example.demo.model.auth.User;
 import com.example.demo.repository.IBillRepository;
+import com.example.demo.repository.IServiceRepository;
 import com.example.demo.service.IGeneralService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
 @Service
 public class BillService implements IBillService {
-    @Autowired
     private IBillRepository billRepository;
+    private IServiceRepository serviceRepository;
+
+    public BillService(IBillRepository billRepository, IServiceRepository serviceRepository) {
+        this.billRepository = billRepository;
+        this.serviceRepository = serviceRepository;
+    }
 
     @Override
     public Iterable<Bill> findAll() {
@@ -62,5 +70,19 @@ public class BillService implements IBillService {
     @Override
     public Iterable<Bill> findBillByUser(Long id, String status1, String status2, String status3) {
         return billRepository.findBillByUser(id, status1, status2, status3);
+    }
+
+    @Transactional
+    public ResponseEntity<Object> updateBillService(Bill bill, Long id) {
+        if (billRepository.findById(id).isPresent()) {
+            Bill newBill = billRepository.findById(id).get();
+            newBill.setNameUser(bill.getNameUser());
+            newBill.setEmail(bill.getEmail());
+            newBill.setService(bill.getService());
+            Bill savedUser = billRepository.save(newBill);
+            if (billRepository.findById(savedUser.getId()).isPresent())
+                return ResponseEntity.accepted().body("User updated successfully");
+            else return ResponseEntity.unprocessableEntity().body("Failed updating the user specified");
+        } else return ResponseEntity.unprocessableEntity().body("Cannot find the user specified");
     }
 }

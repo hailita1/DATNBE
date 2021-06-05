@@ -1,2 +1,2 @@
 ENV=local
-JDBC_DATABASE_URL=jdbc:mysql://localhost:3306/DoAnTotNghiep
+JDBC_DATABASE_URL=jdbc:mysql://localhost:3306/DoAnTotNghiep1
