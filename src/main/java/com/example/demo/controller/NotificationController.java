@@ -5,6 +5,7 @@ import com.example.demo.model.Image;
 import com.example.demo.model.Notification;
 import com.example.demo.model.Utilitie;
 import com.example.demo.model.auth.User;
+import com.example.demo.service.BaseService;
 import com.example.demo.service.notification.INotificationService;
 import com.example.demo.service.user.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,13 +30,19 @@ public class NotificationController {
     @Autowired
     private IUserService userService;
 
+    @Autowired
+    private BaseService baseService;
+
     @GetMapping
+
     public ResponseEntity<Iterable<Notification>> getAllNotification() {
         return new ResponseEntity<>(notificationService.findAll(), HttpStatus.OK);
     }
 
     @PostMapping("/byUser")
     public ResponseEntity<Iterable<Notification>> getAllByUser(@RequestBody User user) {
+        baseService.negotiate();
+        baseService.sendMessage("Okeee");
         return new ResponseEntity<>(notificationService.findAllByUserAndStatusIsTrueOrderByIdDesc(user), HttpStatus.OK);
     }
 
@@ -94,5 +101,4 @@ public class NotificationController {
         }
         return new ResponseEntity<>(notifications, HttpStatus.OK);
     }
-
 }

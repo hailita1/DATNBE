@@ -87,7 +87,6 @@ public class BillController {
             }
         }
         billService.save(bill);
-
         HttpHeaders headers = new HttpHeaders();
         return new ResponseEntity<Void>(headers, HttpStatus.CREATED);
     }
