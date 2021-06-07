@@ -38,6 +38,9 @@ public class UsageBill {
     @Column
     private Double voucher;
 
+    @Column
+    private String service;
+
     @OneToOne
     @JoinColumn(name = "bill_id")
     private Bill bill;

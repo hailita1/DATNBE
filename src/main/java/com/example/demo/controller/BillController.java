@@ -65,13 +65,13 @@ public class BillController {
         bill.setStatus(TEXT_HIRING);
         String time = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss.SSS").format(Calendar.getInstance().getTime());
         bill.setBookingDate(time);
-        long startDate = bill.getStartDate().getTime() + oneDay;
-        long endDate = bill.getEndDate().getTime() + oneDay;
+        long startDate = bill.getStartDate().getTime();
+        long endDate = bill.getEndDate().getTime();
         Date startDate1 = new Date(startDate);
         Date endDate1 = new Date(endDate);
         bill.setStartDate(startDate1);
         bill.setEndDate(endDate1);
-        for (long i = (startDate - oneDay); i <= (endDate - oneDay); i += oneDay) {
+        for (long i = (startDate); i <= (endDate); i += oneDay) {
             Date date1 = new Date(i);
             HouseDay houseDay = new HouseDay();
             houseDay.setDate(date1);
