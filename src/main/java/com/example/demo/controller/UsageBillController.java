@@ -46,6 +46,7 @@ public class UsageBillController {
             houseDay.setHouseDate(bill.getHouseBill());
             houseDayService.save(houseDay);
         }
+        usageBillService.save(bill);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 

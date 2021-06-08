@@ -13,4 +13,6 @@ public interface IHouseDayService extends IGeneralService<HouseDay> {
     Iterable<HouseDay> findAllByHouseDate(House house);
 
     Iterable<HouseDay> findAllByHouseDateAndDateBetween(House house, Date startDate, Date endDate);
+
+    Iterable<HouseDay> findAllByHouseDateAndDateGreaterThan(House house, Date endDate);
 }

@@ -1,5 +1,6 @@
 package com.example.demo.controller;
 
+import com.example.demo.model.Bill;
 import com.example.demo.model.House;
 import com.example.demo.model.HouseDay;
 import com.example.demo.service.houseday.IHouseDayService;
@@ -30,6 +31,15 @@ public class HouseDayController {
     @PostMapping("/listHouseDay")
     public ResponseEntity<Iterable<HouseDay>> findByHouse(@RequestBody House house) {
         Iterable<HouseDay> houseDays = houseDayService.findAllByHouseDate(house);
+        if (houseDays == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(houseDays, HttpStatus.OK);
+    }
+
+    @PostMapping("/listHouseDayBill")
+    public ResponseEntity<Iterable<HouseDay>> findByHouseBill(@RequestBody Bill bill) {
+        Iterable<HouseDay> houseDays = houseDayService.findAllByHouseDateAndDateGreaterThan(bill.getHouseBill(), bill.getEndDate());
         if (houseDays == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }

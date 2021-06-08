@@ -35,6 +35,11 @@ public class HouseDayService implements IHouseDayService {
     }
 
     @Override
+    public Iterable<HouseDay> findAllByHouseDateAndDateGreaterThan(House house, Date endDate) {
+        return dateRepository.findAllByHouseDateAndDateGreaterThan(house, endDate);
+    }
+
+    @Override
     public Optional<HouseDay> findById(Long id) {
         return Optional.empty();
     }
