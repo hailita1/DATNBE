@@ -138,6 +138,16 @@ public class BillController {
         }).orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
+    @PutMapping("/cancelOrder")
+    public ResponseEntity<Bill> cancelOrder(@RequestBody Bill bill) {
+        Optional<Bill> billServiceOptional = billService.findById(bill.getId());
+        return billServiceOptional.map(bill1 -> {
+            bill1.setId(bill1.getId());
+            bill1.setStatus(TEXT_CANCELLATION);
+            return new ResponseEntity<>(billService.save(bill1), HttpStatus.OK);
+        }).orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
+    }
+
     @PutMapping("/confirm")
     public ResponseEntity<Bill> confirmBillByHost(@RequestBody Bill bill) {
         Optional<Bill> billServiceOptional = billService.findById(bill.getId());
