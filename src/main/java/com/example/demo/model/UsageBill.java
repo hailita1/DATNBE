@@ -27,6 +27,9 @@ public class UsageBill {
     private java.util.Date endDate;
 
     @Column
+    private java.util.Date endDateFinal;
+
+    @Column
     private String email;
 
     @Column
@@ -44,4 +47,8 @@ public class UsageBill {
     @OneToOne
     @JoinColumn(name = "bill_id")
     private Bill bill;
+
+    @ManyToOne
+    @JoinColumn(name = "id_house")
+    private House houseBill;
 }

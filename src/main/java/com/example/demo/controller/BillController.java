@@ -160,8 +160,8 @@ public class BillController {
 
     @PostMapping("/deleteBill")
     public ResponseEntity deleteBill(@RequestBody Bill bill) {
-        long startDate = bill.getStartDate().getTime() - oneDay;
-        long endDate = bill.getEndDate().getTime() - oneDay;
+        long startDate = bill.getStartDate().getTime();
+        long endDate = bill.getEndDate().getTime();
         Date startDate1 = new Date(startDate);
         Date endDate1 = new Date(endDate);
         Iterable<HouseDay> listHouseDay = houseDayService.findAllByHouseDateAndDateBetween(bill.getHouseBill(), startDate1, endDate1);
