@@ -33,5 +33,4 @@ public class Service {
     @ManyToOne
     @JoinColumn(name = "id_nha")
     private House houseService;
-
 }

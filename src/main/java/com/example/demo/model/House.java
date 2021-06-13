@@ -64,11 +64,11 @@ public class House {
     @OneToMany(mappedBy = "houseService", cascade = CascadeType.REMOVE)
     private List<Service> services;
 
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany(targetEntity = Utilitie.class, fetch = FetchType.EAGER)
     @JoinTable(name = "houses_utilities",
             joinColumns = {@JoinColumn(name = "id_house")},
             inverseJoinColumns = {@JoinColumn(name = "id_utilitie")})
-    private Set<Utilitie> utilitie;
+    private List<Utilitie> utilitie;
 
     @Column
     private java.util.Date create_at;

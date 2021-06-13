@@ -72,6 +72,7 @@ public class HouseController {
 
     @PostMapping
     public ResponseEntity<Void> createHouse(@RequestBody House house) {
+        house.setUtilitie(house.getUtilitie());
         houseService.save(house);
         if (house.getImages() != null) {
             for (Image image : house.getImages()) {
@@ -83,14 +84,6 @@ public class HouseController {
             for (Service service : house.getServices()) {
                 service.setHouseService(house);
                 serviceService.save(service);
-            }
-        }
-        if (house.getUtilitie() != null) {
-            for (Utilitie utilitieTest : house.getUtilitie()) {
-                Utilitie utilitie = utilitieService.findByName(utilitieTest.getName());
-                Set<Utilitie> utilities = new HashSet<>();
-                utilities.add(utilitie);
-                house.setUtilitie(utilities);
             }
         }
         HttpHeaders headers = new HttpHeaders();
@@ -138,6 +131,7 @@ public class HouseController {
                     serviceService.save(service);
                 }
             }
+            house1.setUtilitie(house.getUtilitie());
             return new ResponseEntity<>(houseService.save(house1), HttpStatus.OK);
         }).orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
