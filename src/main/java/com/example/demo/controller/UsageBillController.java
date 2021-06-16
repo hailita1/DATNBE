@@ -1,9 +1,7 @@
 package com.example.demo.controller;
 
-import com.example.demo.model.Bill;
-import com.example.demo.model.HouseDay;
-import com.example.demo.model.Image;
-import com.example.demo.model.UsageBill;
+import com.example.demo.model.*;
+import com.example.demo.repository.IUsageBillRepository;
 import com.example.demo.service.houseday.IHouseDayService;
 import com.example.demo.service.usageBill.IUsageBillService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -20,6 +19,9 @@ import java.util.Optional;
 public class UsageBillController {
     @Autowired
     private IUsageBillService usageBillService;
+
+    @Autowired
+    private IUsageBillRepository usageBillRepository;
 
     @Autowired
     private IHouseDayService houseDayService;
@@ -64,5 +66,18 @@ public class UsageBillController {
             usageBillService.remove(id);
             return new ResponseEntity<>(usageBill, HttpStatus.OK);
         }).orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
+    }
+
+    @GetMapping("/total-price")
+    public ResponseEntity<Long> sumTotalPrice(@RequestParam(name = "month") Integer month, @RequestParam(name = "year") Integer year, @RequestParam(name = "id") Long id) {
+        return new ResponseEntity<>(usageBillRepository.sumTotalPrice(month, year, id), HttpStatus.OK);
+    }
+
+    @GetMapping("/total-price-by-house")
+    public ResponseEntity<Long> sumTotalPriceByHouse(@RequestParam(name = "month") Integer month,
+                                                     @RequestParam(name = "year") Integer year,
+                                                     @RequestParam(name = "idHost") Long idHost,
+                                                     @RequestParam(name = "idHouse") Long idHouse) {
+        return new ResponseEntity<>(usageBillRepository.sumTotalPriceHomeStay(month, year, idHost, idHouse), HttpStatus.OK);
     }
 }

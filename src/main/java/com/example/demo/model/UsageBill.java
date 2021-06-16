@@ -44,6 +44,9 @@ public class UsageBill {
     @Column
     private String service;
 
+    @Column
+    private int idHost;
+
     @OneToOne
     @JoinColumn(name = "bill_id")
     private Bill bill;
