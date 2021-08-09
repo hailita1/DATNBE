@@ -50,7 +50,6 @@ public class ServiceController {
             service1.setName(service.getName());
             service1.setPrice(service.getPrice());
             service1.setStatus(service.getStatus());
-            service1.setTimes(service.getTimes());
             return new ResponseEntity<>(serviceService.save(service1), HttpStatus.OK);
         }).orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }

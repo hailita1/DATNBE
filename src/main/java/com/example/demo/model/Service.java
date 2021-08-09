@@ -16,9 +16,6 @@ public class Service {
     private String name;
 
     @Column
-    private String times;
-
-    @Column
     private Double price;
 
     @Column

@@ -1,6 +1,5 @@
 package com.example.demo.model;
 
-import com.example.demo.model.auth.User;
 import lombok.Data;
 
 import javax.persistence.*;
